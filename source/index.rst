@@ -1,20 +1,68 @@
-.. video_doc documentation master file, created by
-   sphinx-quickstart on Fri Oct 14 19:52:50 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+=========
+video
+=========
 
-Welcome to video_doc's documentation!
-=====================================
+video的引入
+=============
+
+https://blog.csdn.net/leixiaohua1020/article/details/18893769#comments
+
+https://zhuanlan.zhihu.com/p/41531106
+
+对于刚接触video的同学来说，首先一个问题，在我们的系统中，video开发需要做哪些方面的开发？
+
+我们从生活中的例子出发，在我们的日常生活中是怎么使用video的？我们以手机为例：
+
+ - 视屏的拍摄。我们打开相机APP，按下拍摄按钮，将camera采集到的内容实时显示在屏幕上，拍摄完成后，将视频压缩保存在手机里
+ - 视频的播放。从手机中读取视频文件，解码后在屏幕上显示
+
+因此，对应bk7236，video涉及的模块包括：
+
+ - camera/sensor: dvp(gc2145/gc0328c)/uvc
+ - LCD
+ - sd_card
+ - DMA
+ - DMA2D
+ - JPEG_ENC
+ - JPEG_DEC
+ - H264(视频编码)
+ - YUV_BUF
+
+这些是bk7236与video相关的硬件模块，因此video开发需要：
+
+ - 提供这些硬件模块的驱动代码并调通
+ - video 框架代码
+
+   - 可扩展(camera/encode)
+   - 可维护
+
+
+基本概念/术语
+===============
+
+首先，我们要有个概念，视频动画其实就是由一张张连贯起来的照片连续播放组成的，当一秒钟有24张照片快速播放(视觉残留)，人眼就会认为这是一幅连续的画面，这便是动画的由来。
+
+ - 像素
+ - 分辨率 我们常见的显示屏分辨率1920*1080，1080P是1920*1080(16:9) =2073600，即分辨率为2073600，即大约200万像素， 所以一般200万像素又称1080P。
+
+   - 480P/720P/1080P
+   - 4:3/16:9
+
+ - 帧率(FPS) 每秒钟播放的图片数量，如24帧即每秒钟播放24张图片，60帧即每秒钟播放60张图片，以此类推。
+
+Q：一个分辨率为1080p，帧数为30，时长为10秒，求视频的原始大小？ (RGB888)
+A：1920x1080x3(三原色)x8(比特)x30帧数=1,492,992,000bit/s 码率，约等于 1450 Mbit/s码率
+
+   1450(码率)x10(时长)=14500M=1.45G
+
+
+视频编码
+==========
+
+在剪辑软件导出的时候，看到“H.264,MPEG4”等等的这些词，叫编码格式。
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :numbered:
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   DVP <dvp/index>
